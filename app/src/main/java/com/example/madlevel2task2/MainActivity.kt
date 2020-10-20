@@ -48,8 +48,9 @@ class MainActivity : AppCompatActivity(){
             list.add(DataSource.items[i])
         }
 
-        //notify the data set has changed.
+
         createItemTouchHelper().attachToRecyclerView(recyclerview)
+        Quizadapter.notifyDataSetChanged()
     }
 
 
@@ -69,28 +70,33 @@ class MainActivity : AppCompatActivity(){
 
 
             //voor het swipen naar links en rechts
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
-                if (position == ItemTouchHelper.LEFT && list[position].boolean == false) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                if (direction == ItemTouchHelper.LEFT && list[position].boolean == false) {
                     list.removeAt(position)
                 } else {
-                    Snackbar.make(
-                        recyclerview,
-                        getString(R.string.incorrect),
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .show()
+                        Snackbar.make(
+                            recyclerview,
+                            getString(R.string.incorrect),
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .show()
                 }
 
-                if (position == ItemTouchHelper.RIGHT && list[position].boolean == true) {
+                if (direction == ItemTouchHelper.RIGHT && list[position].boolean == true) {
                     list.removeAt(position)
                 } else {
+
                     Snackbar.make(
                         recyclerview,
                         getString(R.string.incorrect),
                         Snackbar.LENGTH_SHORT
                     )
                         .show()
+
                 }
+
+                Quizadapter.notifyDataSetChanged()
 
             }
 
